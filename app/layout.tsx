@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Persfin",
-  description: "Personal finance application.",
+  title: "Persfin 💶 Personal Finance Tracker",
+  description: "Personal finance tracking application.",
   keywords: [
     "persfin",
     "personal finance",
