@@ -1,2 +1,3 @@
-# persfin
-Personal finance application
+# Persfin
+
+Personal finance application.
