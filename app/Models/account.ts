@@ -9,6 +9,7 @@ export type UserBudget = {
 }
 
 export type Account = {
+    id: string;
     name: string;
     description: string;
     type: AccountType;
@@ -17,6 +18,7 @@ export type Account = {
 // Transaction (debit and credit) between at least two accounts.
 // Invariant: Sum of debit equals the sum of credits.
 export type Transaction = {
+    id: string;
     date: Date;
     description?: string;
 
@@ -36,6 +38,7 @@ export type BudgetAction =
     | { type: "ADD_TRANSACTION", transaction: Transaction }
     | { type: "ADD_TRANSACTIONS", transactions: Transaction[] }
     | { type: "REVERT_TRANSACTION", transaction: Transaction } // Reverts a transaction by adding a new transaction with opposite entries.
+    | { type: "REMOVE_TRANSACTION", transaction: Transaction }
     | { type: "ADD_ACCOUNT", account: Account }
     | { type: "UPDATE_ACCOUNT", account: Account } // Type changes not allowed.
     | { type: "REMOVE_ACCOUNT", account: Account } // Only allowed if no transactions exist for this account.

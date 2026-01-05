@@ -6,8 +6,8 @@ import Navigation from "./Components/Navigation";
 
 export default function Home() {
   return (
-    <div className="flex flex-col w-full h-full bg-[#212121]">
-      <div className="flex flex-col p-5 gap-4 w-full h-full bg-[#212121]">
+    <div className="flex flex-col w-full min-h-screen bg-[#212121]">
+      <div className="flex flex-col p-5 gap-4">
         <Header />
       </div>
       <div className="flex flex-row">

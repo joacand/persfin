@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useReducer, useState } from "react";
-import { Entry } from "../Models/account";
+import { Entry, Transaction } from "../Models/account";
 import { DefaultBudgetAccount, LoadBudgetAccount } from "../Services/storageService";
 import { accountReducer } from "../Services/accountReducer";
 
@@ -46,6 +46,7 @@ export default function BudgetView() {
 
         dispatch({
             type: "ADD_TRANSACTION", transaction: {
+                id: crypto.randomUUID(),
                 date: new Date(),
                 entries,
                 description
@@ -67,6 +68,18 @@ export default function BudgetView() {
         if (!isNaN(value) && value >= 0) {
             setAmount(value);
         }
+    }
+
+    function revertTransaction(transaction: Transaction) {
+        dispatch({
+            type: "REVERT_TRANSACTION", transaction
+        });
+    }
+
+    function removeTransaction(transaction: Transaction) {
+        dispatch({
+            type: "REMOVE_TRANSACTION", transaction
+        });
     }
 
     return (
@@ -128,16 +141,22 @@ export default function BudgetView() {
                 <h2 className="text-2xl">Transaction Log</h2>
                 {userBudget.transactions.length === 0 && <p>No transactions available.</p>}
                 <div className="flex gap-2 flex-col flex-wrap">
-                    {userBudget.transactions.toReversed().map((transaction, index) => (
-                        <div key={index} className="border border-dashed rounded-md p-4">
-                            <p><strong>{new Date(transaction.date).toLocaleString()}</strong></p>
-                            <p>{transaction.description}</p>
-                            <div className="flex flex-col">
-                                {transaction.entries.map((entry, entryIndex) => (
-                                    <div key={entryIndex}>
-                                        <p>{entry.type} {entry.amount} - {entry.account.name}</p>
-                                    </div>
-                                ))}
+                    {userBudget.transactions.toReversed().map((transaction) => (
+                        <div key={transaction.id} className="flex flex-row flex-wrap justify-between border border-dashed rounded-md p-4 gap-2">
+                            <div>
+                                <p><strong>{new Date(transaction.date).toLocaleString()}</strong></p>
+                                <p>{transaction.description}</p>
+                                <div className="flex flex-col">
+                                    {transaction.entries.map((entry, entryIndex) => (
+                                        <div key={entryIndex}>
+                                            <p>{entry.type} {entry.amount} - {entry.account.name}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="flex flex-row gap-2">
+                                <button className="cursor-pointer border p-2" onClick={() => revertTransaction(transaction)}>◀️ Revert</button>
+                                <button className="cursor-pointer border p-2" onClick={() => removeTransaction(transaction)}>➖ Remove</button>
                             </div>
                         </div>
                     ))}

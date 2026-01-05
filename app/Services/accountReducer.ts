@@ -22,7 +22,10 @@ export function accountReducer(state: UserBudget, action: BudgetAction): UserBud
             throw new Error("Function not implemented.");
         }
         case "REVERT_TRANSACTION": {
-            throw new Error("Function not implemented.");
+            return revertTransaction(state, action.transaction);
+        }
+        case "REMOVE_TRANSACTION": {
+            return removeTransaction(state, action.transaction);
         }
     }
 
@@ -53,5 +56,38 @@ export function accountReducer(state: UserBudget, action: BudgetAction): UserBud
         return transaction.entries.reduce((sum, entry) => {
             return entry.type === "Debit" ? sum + entry.amount : sum - entry.amount;
         }, 0) === 0;
+    }
+
+    function revertTransaction(state: UserBudget, transaction: Transaction): UserBudget {
+        const transactionToModify = state.transactions.find(t => t.id === transaction.id);
+        if (!transactionToModify) { return state; }
+
+        const reversedEntries = transactionToModify.entries.map(entry => {
+            entry.type = entry.type === "Debit" ? "Credit" : "Debit";
+            return entry;
+        });
+        const reversedTransaction: Transaction = {
+            id: crypto.randomUUID(),
+            date: new Date(),
+            description: `Revert: ${transactionToModify.description || ""}`,
+            entries: reversedEntries
+        };
+        const newTransactions = [...state.transactions, reversedTransaction];
+        const newBudget = {
+            ...state,
+            transactions: newTransactions
+        };
+        SaveBudgetAccount(newBudget);
+        return newBudget;
+    }
+
+    function removeTransaction(state: UserBudget, transaction: Transaction): UserBudget {
+        const newTransactions = state.transactions.filter(t => t.id !== transaction.id);
+        const newBudget = {
+            ...state,
+            transactions: newTransactions
+        };
+        SaveBudgetAccount(newBudget);
+        return newBudget;
     }
 }
