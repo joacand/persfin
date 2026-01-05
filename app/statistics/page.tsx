@@ -22,9 +22,9 @@ export default function Statistics() {
     }
 
     return (
-        <div className="flex gap-10 flex-col">
+        <div className="flex gap-4 flex-col">
             <h2 className="text-3xl">Statistics</h2>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-4 bg-[#0B1A16] rounded p-4">
                 <p>Assets: {projection.assets}</p>
                 <p>Liabilities: {projection.liabilities}</p>
                 <p>Net worth: {projection.equity}</p>
