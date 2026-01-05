@@ -6,7 +6,7 @@ export default function About() {
     return (
         <div className="flex gap-10 flex-col">
             <h2 className="text-3xl">About</h2>
-            <div className="flex flex-col gap-2 max-w-3xl mx-auto text-base">
+            <div className="flex flex-col gap-2 max-w-3xl text-base">
                 <p className="text-lg">Welcome to <strong>Perfin!</strong></p>
                 <p>This is a personal finance application based on <Link className="text-blue-500" href="https://en.wikipedia.org/wiki/Double-entry_bookkeeping">double-entry accounting</Link> principles. Every transaction is recorded from an account to another account, where each account has one of the type: asset, liability, equity, revenue, or expense. This ensures the finances are always balanced and traceable.</p>
                 <p>The app allows you to track your bank accounts, income, expenses, loans, and investments in a single place. By using proper accounting logic, you can generate accurate projections of your net worth and monitor how your actions affect your financial health over time.</p>
