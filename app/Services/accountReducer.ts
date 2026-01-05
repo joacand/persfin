@@ -1,4 +1,4 @@
-import { BudgetAction, Entry, ModifierType, Transaction, UserBudget } from "../Models/account";
+import { Account, BudgetAction, Entry, ModifierType, Transaction, UserBudget } from "../Models/account";
 import { SaveBudgetAccount } from "./storageService";
 
 export function accountReducer(state: UserBudget, action: BudgetAction): UserBudget {
@@ -13,10 +13,10 @@ export function accountReducer(state: UserBudget, action: BudgetAction): UserBud
             throw new Error("Function not implemented.");
         }
         case "ADD_ACCOUNT": {
-            throw new Error("Function not implemented.");
+            return addAccount(state, action.account);
         }
         case "REMOVE_ACCOUNT": {
-            throw new Error("Function not implemented.");
+            return removeAccount(state, action.account);
         }
         case "UPDATE_ACCOUNT": {
             throw new Error("Function not implemented.");
@@ -37,6 +37,35 @@ export function accountReducer(state: UserBudget, action: BudgetAction): UserBud
         const newBudget = {
             ...budget,
             transactions: [...budget.transactions, transaction]
+        };
+        SaveBudgetAccount(newBudget);
+        return newBudget;
+    }
+
+    function addAccount(budget: UserBudget, account: Account): UserBudget {
+        const newBudget = {
+            ...budget,
+            accounts: [...budget.accounts, account]
+        };
+        SaveBudgetAccount(newBudget);
+        return newBudget;
+    }
+
+    function removeAccount(budget: UserBudget, account: Account): UserBudget {
+        const accountToRemove = budget.accounts.find(a => a.id === account.id);
+        if (!accountToRemove) { return budget; }
+
+        if (budget.transactions.some(t => t.entries.some(e => e.account.id === account.id))) {
+            return {
+                ...budget,
+                errors: [`Cannot remove account "${account.name}" because it has transactions.`]
+            };
+        }
+
+        const newAccounts = budget.accounts.filter(t => t.id !== account.id);
+        const newBudget = {
+            ...budget,
+            accounts: newAccounts
         };
         SaveBudgetAccount(newBudget);
         return newBudget;
