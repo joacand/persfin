@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useReducer, useState } from "react";
-import { Entry, Transaction } from "../Models/account";
-import { DefaultBudgetAccount, LoadBudgetAccount } from "../Services/storageService";
-import { accountReducer } from "../Services/accountReducer";
+import { useEffect, useState } from "react";
+import { Entry } from "../Models/account";
+import { LoadBudgetAccount } from "../Services/storageService";
 import PrimaryButton from "./PrimaryButton";
+import { useBudget } from "./BudgetProvider";
 
 export default function BudgetView() {
-    const [userBudget, dispatch] = useReducer(accountReducer, DefaultBudgetAccount());
+    const { userBudget, dispatch } = useBudget();
     const [entries, setEntries] = useState<Entry[]>([]);
 
     const [fromAccountIndex, setFromAccountIndex] = useState<number | "">("");

@@ -1,21 +1,20 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { LoadBudgetAccount } from "../Services/storageService";
-import { UserBudget } from "../Models/account";
 import Project, { Projection } from "../Services/viewProjector";
+import { useBudget } from "../Components/BudgetProvider";
 
 export default function Statistics() {
-    const [userBudget, setUserBudget] = useState<UserBudget | null>(null);
+    const { userBudget } = useBudget();
     const [projection, setProjection] = useState<Projection | null>(null);
 
     useEffect(() => {
-        LoadBudgetAccount().then(budget => {
-            setUserBudget(budget);
-            const projection = Project(budget);
+        if (userBudget) {
+            const projection = Project(userBudget);
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setProjection(projection);
-        });
-    }, []);
+        }
+    }, [userBudget]);
 
     if (!userBudget || !projection) {
         return <p>Loading...</p>;

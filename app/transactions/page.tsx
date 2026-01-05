@@ -1,19 +1,11 @@
 "use client";
 
 import PrimaryButton from "../Components/PrimaryButton";
-import { useEffect, useReducer, useState } from "react";
-import { DefaultBudgetAccount, LoadBudgetAccount } from "../Services/storageService";
-import { Transaction, UserBudget } from "../Models/account";
-import { accountReducer } from "../Services/accountReducer";
+import { Transaction } from "../Models/account";
+import { useBudget } from "../Components/BudgetProvider";
 
 export default function Transactions() {
-    const [userBudget, dispatch] = useReducer(accountReducer, DefaultBudgetAccount());
-
-    useEffect(() => {
-        LoadBudgetAccount().then(budget => {
-            dispatch({ type: "INIT", budgetAccount: budget });
-        });
-    }, []);
+    const { userBudget, dispatch } = useBudget();
 
     if (!userBudget) {
         return <p>Loading...</p>;

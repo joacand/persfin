@@ -11,10 +11,6 @@ export function LoadBudgetAccountSync(): UserBudget {
 }
 
 export async function LoadBudgetAccount(): Promise<UserBudget> {
-    // Temporary
-    //if (process.env.NODE_ENV === "development") {
-    //    return DefaultBudgetAccount();
-    //}
     const existingItem = localStorage.getItem("perfin.userBudget");
     if (existingItem) {
         return JSON.parse(existingItem) as UserBudget;
