@@ -1,4 +1,4 @@
-import { BudgetAction, Transaction, UserBudget } from "../Models/account";
+import { BudgetAction, Entry, ModifierType, Transaction, UserBudget } from "../Models/account";
 import { SaveBudgetAccount } from "./storageService";
 
 export function accountReducer(state: UserBudget, action: BudgetAction): UserBudget {
@@ -59,23 +59,28 @@ export function accountReducer(state: UserBudget, action: BudgetAction): UserBud
     }
 
     function revertTransaction(state: UserBudget, transaction: Transaction): UserBudget {
-        const transactionToModify = state.transactions.find(t => t.id === transaction.id);
+        const newTransactions = [...state.transactions];
+        const transactionToModify = newTransactions.find(t => t.id === transaction.id);
         if (!transactionToModify) { return state; }
 
-        const reversedEntries = transactionToModify.entries.map(entry => {
-            entry.type = entry.type === "Debit" ? "Credit" : "Debit";
-            return entry;
-        });
+        const reversedEntries: Entry[] = transactionToModify.entries.map(entry => {
+            return {
+                type: entry.type === "Debit" ? "Credit" : "Debit" as ModifierType,
+                account: entry.account,
+                amount: entry.amount
+            }
+        }
+        );
         const reversedTransaction: Transaction = {
             id: crypto.randomUUID(),
             date: new Date(),
             description: `Revert: ${transactionToModify.description || ""}`,
             entries: reversedEntries
         };
-        const newTransactions = [...state.transactions, reversedTransaction];
+        const finalTransactions = [...newTransactions, reversedTransaction];
         const newBudget = {
             ...state,
-            transactions: newTransactions
+            transactions: finalTransactions
         };
         SaveBudgetAccount(newBudget);
         return newBudget;

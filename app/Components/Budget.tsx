@@ -9,8 +9,8 @@ export default function BudgetView() {
     const [userBudget, dispatch] = useReducer(accountReducer, DefaultBudgetAccount());
     const [entries, setEntries] = useState<Entry[]>([]);
 
-    const [fromAccountIndex, setFromAccountIndex] = useState<number>(0);
-    const [toAccountIndex, setToAccountIndex] = useState<number>(0);
+    const [fromAccountIndex, setFromAccountIndex] = useState<number | "">("");
+    const [toAccountIndex, setToAccountIndex] = useState<number | "">("");
     const [amount, setAmount] = useState<number>(0);
     const [description, setDescription] = useState<string>("");
 
@@ -27,6 +27,7 @@ export default function BudgetView() {
         // TODO: Add status text to user from validation errors
         if (amount <= 0) return;
         if (fromAccountIndex === toAccountIndex) return;
+        if (fromAccountIndex === "" || toAccountIndex === "") return;
 
         console.log(`Adding entry from ${fromAccountIndex} to ${toAccountIndex} amount ${amount}`);
         const fromAccount = userBudget.accounts[fromAccountIndex];
@@ -58,8 +59,8 @@ export default function BudgetView() {
     }
 
     function clearInputs() {
-        setFromAccountIndex(0);
-        setToAccountIndex(0);
+        setFromAccountIndex("");
+        setToAccountIndex("");
         setAmount(0);
     }
 
@@ -83,40 +84,31 @@ export default function BudgetView() {
     }
 
     return (
-        <div className="flex gap-10 flex-col">
-            <div>
-                <h2 className="text-2xl"><strong>{userBudget.name}</strong></h2>
-                {userBudget.accounts.length === 0 && <p>No accounts available.</p>}
-                <div className="flex gap-2 flex-row flex-wrap">
-                    {userBudget.accounts.map((account, index) => (
-                        <div key={index} className="border border-dashed rounded-md p-4 cursor-pointer">
-                            <p>{account.name} - {account.description}</p>
-                            <p>Type: {account.type.type}</p>
-                        </div>
-                    ))}
-                </div>
-            </div>
+        <div className="flex gap-4 flex-col">
+            <h2 className="text-3xl">{userBudget.name}</h2>
             <div className="flex flex-col gap-2 border border-dashed p-4">
                 <h2 className="text-xl">Create Transaction</h2>
                 <div className="flex flex-row gap-2">
                     <h3>From:</h3>
-                    <select onChange={e => setFromAccountIndex(e.target.selectedIndex)}>
+                    <select value={fromAccountIndex} onChange={e => setFromAccountIndex(e.target.value === "" ? "" : Number(e.target.value))}>
+                        <option className="bg-black" value=""></option>
                         {userBudget.accounts.map((account, index) => (
-                            <option className="bg-black" key={index}>{account.name}</option>
+                            <option className="bg-black" key={index} value={index}>{account.name}</option>
                         ))}
                     </select>
                 </div>
                 <div className="flex flex-row gap-2">
                     <h3>To:</h3>
-                    <select onChange={e => setToAccountIndex(e.target.selectedIndex)}>
+                    <select value={toAccountIndex} onChange={e => setToAccountIndex(e.target.value === "" ? "" : Number(e.target.value))}>
+                        <option className="bg-black" value=""></option>
                         {userBudget.accounts.map((account, index) => (
-                            <option className="bg-black" key={index}>{account.name}</option>
+                            <option className="bg-black" key={index} value={index}>{account.name}</option>
                         ))}
                     </select>
                 </div>
                 <div className="flex flex-row gap-2">
                     <h3>Amount:</h3>
-                    <input type="number" min={0} onChange={trySetAmount} />
+                    <input type="number" min={0} onChange={trySetAmount} value={amount} />
                 </div>
                 <button className="cursor-pointer border p-2" onClick={addEntry}>➕ Add</button>
                 <hr />
