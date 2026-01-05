@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Entry, UserBudget } from "../Models/account";
-import { LoadBudgetAccount, SaveBudgetAccount } from "../Services/storageService";
+import { useEffect, useReducer, useState } from "react";
+import { Entry } from "../Models/account";
+import { DefaultBudgetAccount, LoadBudgetAccount } from "../Services/storageService";
+import { accountReducer } from "../Services/accountReducer";
 
 export default function BudgetView() {
-    const [userBudget, setUserBudget] = useState<UserBudget | null>();
+    const [userBudget, dispatch] = useReducer(accountReducer, DefaultBudgetAccount());
     const [entries, setEntries] = useState<Entry[]>([]);
 
     const [fromAccountIndex, setFromAccountIndex] = useState<number>(0);
@@ -14,7 +15,9 @@ export default function BudgetView() {
     const [description, setDescription] = useState<string>("");
 
     useEffect(() => {
-        LoadBudgetAccount().then(setUserBudget);
+        LoadBudgetAccount().then(budget => {
+            dispatch({ type: "INIT", budgetAccount: budget });
+        });
     }, []);
 
     if (!userBudget) { return <p>Loading...</p> }
@@ -41,16 +44,14 @@ export default function BudgetView() {
         if (userBudget == null) return;
         console.log(`Finishing transaction`);
 
-        const newBudget = {
-            ...userBudget,
-            transactions: [...userBudget.transactions, {
+        dispatch({
+            type: "ADD_TRANSACTION", transaction: {
                 date: new Date(),
                 entries,
                 description
-            }]
-        };
-        setUserBudget(newBudget);
-        SaveBudgetAccount(newBudget);
+            }
+        });
+
         setEntries([]);
         clearInputs();
     }
@@ -106,6 +107,17 @@ export default function BudgetView() {
                 </div>
                 <button className="cursor-pointer border p-2" onClick={addEntry}>➕ Add</button>
                 <hr />
+                <div>
+                    <h3>Current Entries:</h3>
+                    {entries.length === 0 && <p>No entries added.</p>}
+                    <div className="flex flex-col">
+                        {entries.map((entry, index) => (
+                            <div key={index}>
+                                <p>{entry.type} {entry.amount} - {entry.account.name}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
                 <div className="flex flex-row gap-2">
                     <h3>Describe the transaction:</h3>
                     <input type="text" onChange={e => setDescription(e.target.value)} />

@@ -2,6 +2,14 @@
 
 import { UserBudget } from "../Models/account";
 
+export function LoadBudgetAccountSync(): UserBudget {
+    const existingItem = localStorage.getItem("perfin.userBudget");
+    if (existingItem) {
+        return JSON.parse(existingItem) as UserBudget;
+    }
+    return DefaultBudgetAccount();
+}
+
 export async function LoadBudgetAccount(): Promise<UserBudget> {
     // Temporary
     //if (process.env.NODE_ENV === "development") {
@@ -18,7 +26,7 @@ export async function SaveBudgetAccount(budget: UserBudget): Promise<void> {
     localStorage.setItem("perfin.userBudget", JSON.stringify(budget));
 }
 
-function DefaultBudgetAccount(): UserBudget {
+export function DefaultBudgetAccount(): UserBudget {
     const defaultBudget =
         {
             name: "Daily Budget",
@@ -30,6 +38,5 @@ function DefaultBudgetAccount(): UserBudget {
             ],
             transactions: []
         } as UserBudget;
-    localStorage.setItem("perfin.userBudget", JSON.stringify(defaultBudget));
     return defaultBudget;
 }

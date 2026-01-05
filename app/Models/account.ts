@@ -5,6 +5,7 @@ export type UserBudget = {
     // List of all transactions made. A transaction is validated before accepted.
     // Views can be built from this to list account values and A=E+L.
     transactions: Transaction[];
+    errors?: string[];
 }
 
 export type Account = {
@@ -31,6 +32,7 @@ export type Entry = {
 
 // Actions for the reducer
 export type BudgetAction =
+    | { type: "INIT", budgetAccount: UserBudget }
     | { type: "ADD_TRANSACTION", transaction: Transaction }
     | { type: "ADD_TRANSACTIONS", transactions: Transaction[] }
     | { type: "REVERT_TRANSACTION", transaction: Transaction } // Reverts a transaction by adding a new transaction with opposite entries.
