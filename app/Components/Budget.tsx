@@ -30,7 +30,6 @@ export default function BudgetView() {
         if (fromAccountIndex === toAccountIndex) return;
         if (fromAccountIndex === "" || toAccountIndex === "") return;
 
-        console.log(`Adding entry from ${fromAccountIndex} to ${toAccountIndex} amount ${amount}`);
         const fromAccount = userBudget.accounts[fromAccountIndex];
         const toAccount = userBudget.accounts[toAccountIndex];
 
@@ -44,7 +43,6 @@ export default function BudgetView() {
 
     function finishTransaction() {
         if (userBudget == null) return;
-        console.log(`Finishing transaction`);
 
         dispatch({
             type: "ADD_TRANSACTION", transaction: {

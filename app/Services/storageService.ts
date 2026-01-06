@@ -33,6 +33,7 @@ export function DefaultBudgetAccount(): UserBudget {
                 { name: "Income", description: "Income Revenue Account", type: { type: "Revenue" }, id: crypto.randomUUID() },
                 { name: "Expense", description: "Default Expense Account", type: { type: "Expense" }, id: crypto.randomUUID() }
             ],
+            unit: "kr",
             transactions: []
         } as UserBudget;
     return defaultBudget;

@@ -1,6 +1,7 @@
 export type UserBudget = {
     name: string;
     accounts: Account[];
+    unit: string;
 
     // List of all transactions made. A transaction is validated before accepted.
     // Views can be built from this to list account values and A=E+L.

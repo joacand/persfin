@@ -50,7 +50,7 @@ export default function RootLayout({
             </div>
             <div className="flex flex-row">
               <Navigation />
-              <div className="flex flex-col items-center p-5 gap-4">
+              <div className="flex flex-col flex-1 p-5 gap-4">
                 <main className="flex flex-col px-4 gap-4 w-full max-w-330 ">
                   {children}
                 </main>

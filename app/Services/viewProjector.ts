@@ -1,21 +1,22 @@
+"use client";
+
 import { UserBudget } from "../Models/account";
 
 export type Projection = {
     assets: number,
     liabilities: number,
-    equity: number
+    equity: number,
+    graphData: Array<{ dateTime: number, assets: number, liabilities: number, equity: number }>
 }
 
 export default function Project(userBudget: UserBudget): Projection {
-    const projection: Projection = { assets: 0, liabilities: 0, equity: 0 };
+    const projection: Projection = { assets: 0, liabilities: 0, equity: 0, graphData: [] };
 
     let sumRevenue = 0;
     let sumExpenses = 0;
 
     for (const transaction of userBudget.transactions) {
-        console.log(`Projecting transaction ${transaction.id}`);
         for (const entry of transaction.entries) {
-            console.log(`  Entry: ${entry.type} ${entry.amount} to ${entry.account.name} (${entry.account.type.type})`);
             const accountType = entry.account.type.type;
             const amount = entry.amount;
 
@@ -35,6 +36,27 @@ export default function Project(userBudget: UserBudget): Projection {
                 case "Expense":
                     sumExpenses += (entry.type === "Debit" ? amount : -amount);
                     break;
+            }
+
+            const date =
+                transaction.date instanceof Date
+                    ? transaction.date
+                    : new Date(transaction.date);
+
+            const tempEquity = projection.equity + (sumRevenue - sumExpenses);
+
+            const existingEntry = projection.graphData.find(d => d.dateTime === date.getTime());
+            if (existingEntry) {
+                existingEntry.assets = projection.assets;
+                existingEntry.liabilities = projection.liabilities;
+                existingEntry.equity = tempEquity;
+            } else {
+                projection.graphData.push({
+                    dateTime: date.getTime(),
+                    assets: projection.assets,
+                    liabilities: projection.liabilities,
+                    equity: tempEquity
+                });
             }
         }
     }
