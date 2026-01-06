@@ -44,17 +44,15 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <BudgetProvider>
-          <div className="flex flex-col w-full min-h-screen bg-[#0B1210] text-white">
-            <div className="flex flex-col p-5 gap-4">
-              <Header />
-            </div>
-            <div className="flex flex-row">
-              <Navigation />
-              <div className="flex flex-col flex-1 p-5 gap-4">
-                <main className="flex flex-col px-4 gap-4 w-full max-w-330 ">
-                  {children}
-                </main>
+          <div className="flex flex-row justify-center min-h-screen bg-[#0E1114] text-white">
+            <div className="flex flex-col items-center w-full">
+              <div className="flex flex-row flex-wrap justify-center items-center px-4 gap-4 bg-[#151A1E] w-full">
+                <Header />
+                <Navigation />
               </div>
+              <main className="flex flex-col flex-1 bg-[#151A1E] p-4 rounded w-[min(100%,80rem)] m-5 items-center">
+                {children}
+              </main>
             </div>
           </div>
         </BudgetProvider>

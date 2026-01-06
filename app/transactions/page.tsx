@@ -24,10 +24,10 @@ export default function Transactions() {
     }
 
     return (
-        <div className="flex gap-4 flex-col">
+        <div className="flex gap-4 flex-col w-[min(100%,80rem)]">
             <h2 className="text-3xl">Transactions</h2>
             {userBudget.transactions.length === 0 && <p>No transactions available.</p>}
-            <div className="flex flex-col gap-4 bg-[#0B1A16] rounded p-4 flex-wrap">
+            <div className="flex flex-col gap-4 bg-[#1B2227] rounded p-4 flex-wrap">
                 {userBudget.transactions.toReversed().map((transaction) => (
                     <div key={transaction.id} className="flex flex-row flex-wrap justify-between items-end border border-dashed rounded-md p-4 gap-2">
                         <div>

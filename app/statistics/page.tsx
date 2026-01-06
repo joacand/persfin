@@ -22,15 +22,15 @@ export default function Statistics() {
     }
 
     return (
-        <div className="flex gap-4 flex-col">
+        <div className="flex gap-4 flex-col w-[min(100%,80rem)]">
             <h2 className="text-3xl">Statistics</h2>
-            <div className="flex flex-col gap-4 bg-[#0B1A16] rounded p-4">
+            <div className="flex flex-col gap-4 bg-[#1B2227] rounded p-4">
                 <p>Assets: {projection.assets} {userBudget.unit}</p>
                 <p>Debts (liabilities): {projection.liabilities} {userBudget.unit}</p>
                 <p>Net worth (equity): {projection.equity} {userBudget.unit}</p>
             </div>
             <div className="w-full h-[50vh]">
-                <ResponsiveContainer width="100%" height="100%" className="bg-[#0B1A16] rounded p-4">
+                <ResponsiveContainer width="100%" height="100%" className="bg-[#1B2227] rounded p-4">
                     <LineChart data={projection.graphData}>
                         <Line type="monotone" dataKey="assets" stroke="#4f46e5" name="Assets" />
                         <Line type="monotone" dataKey="equity" stroke="#16a34a" name="Net worth (equity)" />

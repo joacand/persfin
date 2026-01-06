@@ -35,9 +35,9 @@ export default function Settings() {
     }
 
     return (
-        <div className="flex gap-4 flex-col">
+        <div className="flex gap-4 flex-col w-[min(100%,80rem)]">
             <h2 className="text-3xl">Settings</h2>
-            <div className="flex gap-4 flex-col items-start bg-[#0B1A16] rounded p-4 max-w-md">
+            <div className="flex gap-4 flex-col items-start bg-[#1B2227] rounded p-4 max-w-md">
                 <div className="grid grid-cols-[120px_1fr] items-center gap-2">
                     <label>Name:</label>
                     <input

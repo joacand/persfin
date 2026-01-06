@@ -50,9 +50,9 @@ export default function Accounts() {
     }
 
     return (
-        <div className="flex gap-4 flex-col items-start ">
+        <div className="flex gap-4 flex-col items-start">
             <h2 className="text-3xl">Accounts</h2>
-            <div className="flex flex-col flex-wrap items-start gap-4 bg-[#0B1A16] rounded p-4">
+            <div className="flex flex-col flex-wrap items-start gap-4 bg-[#1B2227] rounded p-4">
                 {userBudget.accounts.length === 0 && <p>No accounts available.</p>}
                 <div className="flex gap-2 flex-row flex-wrap">
                     {userBudget.accounts.map((account, index) => (
@@ -68,7 +68,7 @@ export default function Accounts() {
                 </div>
             </div>
             <div className="flex flex-row gap-2">
-                <div className="flex flex-col flex-wrap items-start gap-4 bg-[#0B1A16] rounded p-4">
+                <div className="flex flex-col flex-wrap items-start gap-4 bg-[#1B2227] rounded p-4">
                     <div className="grid grid-cols-[120px_1fr] items-center gap-2">
                         <label>Account type:</label>
                         <select
@@ -109,7 +109,7 @@ export default function Accounts() {
                         Add
                     </PrimaryButton>
                 </div>
-                <div className="flex flex-col flex-wrap gap-4 bg-[#0B1A16] rounded p-4">
+                <div className="flex flex-col flex-wrap gap-4 bg-[#1B2227] rounded p-4">
                     <p>Keep in mind to use the correct <strong>account type</strong> for your account. Here are some examples:</p>
                     <ul>
                         <li><strong>Asset:</strong> Cash, Bank Account, Inventory</li>

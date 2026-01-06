@@ -8,7 +8,7 @@ interface ButtonProps {
     disabled?: boolean;
 }
 
-const baseClass = "relative bg-[#1DBA8A] text-[#E6F2EE] rounded-[10px] flex items-center justify-center p-2 text-center transition-transform duration-200 ease-in-out";
+const baseClass = "relative bg-[#1DB954] text-[#E6F2EE] rounded-[10px] flex items-center justify-center p-2 text-center transition-transform duration-200 ease-in-out";
 
 const PrimaryButton: React.FC<ButtonProps> = ({ href, children, onClick, className, disabled }) => {
     if (href) {
@@ -16,7 +16,7 @@ const PrimaryButton: React.FC<ButtonProps> = ({ href, children, onClick, classNa
             <Link
                 href={href}
                 className={`${baseClass} ${className} 
-                    ${disabled ? 'opacity-50 ' : 'cursor-pointer hover:bg-[#3A6F5E]'}`}>
+                    ${disabled ? 'opacity-50 ' : 'cursor-pointer hover:bg-[#1A7F52]'}`}>
                 {children}
             </Link>
         );
@@ -26,7 +26,7 @@ const PrimaryButton: React.FC<ButtonProps> = ({ href, children, onClick, classNa
             onClick={onClick}
             disabled={disabled}
             className={`${baseClass} ${className} 
-                ${disabled ? 'opacity-50 ' : 'cursor-pointer hover:bg-[#3A6F5E]'}`}>
+                ${disabled ? 'opacity-50 ' : 'cursor-pointer hover:bg-[#1A7F52]'}`}>
             {children}
         </button>
     );

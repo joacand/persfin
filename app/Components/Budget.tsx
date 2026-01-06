@@ -103,7 +103,7 @@ export default function BudgetView() {
     return (
         <div className="flex gap-4 flex-col">
             <h2 className="text-3xl">{userBudget.name}</h2>
-            <div className="flex flex-col gap-4 bg-[#0B1A16] rounded p-4 max-w-md">
+            <div className="flex flex-col gap-4 bg-[#1B2227] rounded p-4 max-w-3xl">
                 <h2 className="text-xl">Add Transaction</h2>
 
                 <hr />
@@ -187,7 +187,7 @@ export default function BudgetView() {
             {userBudget.isDefault &&
                 <div className="flex flex-col gap-4">
                     <h2 className="text-xl">First Time</h2>
-                    <div className="bg-[#0B1A16] rounded p-4 max-w-3xl flex flex-col items-start gap-2">
+                    <div className="bg-[#1B2227] rounded p-4 max-w-3xl flex flex-col items-start gap-2">
                         <p>Since this is your first time visiting, a default budget has been created.</p>
                         <p>This budget has some pre-configured accounts, feel free to add or remove these in the <Link href={"/accounts"}>Accounts</Link> section.</p>
                         <p>To get rid of this dialog, enter the name of your budget account below and migrate or create fresh.</p>
