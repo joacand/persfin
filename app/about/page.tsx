@@ -8,7 +8,7 @@ const LOGO_SRC = `${BASE}/logo.svg`;
 
 export default function About() {
     return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 w-[min(100%,80rem)]">
             <h2 className="text-3xl">About</h2>
             <div className="flex flex-col max-w-3xl text-base gap-4 bg-[#1B2227] rounded p-4">
                 <p className="text-lg flex flex-row gap-2">Welcome to <strong>Perfin!</strong><Image loading="eager" src={LOGO_SRC} alt="Logo" width={24} height={24}/></p>

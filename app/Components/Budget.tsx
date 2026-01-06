@@ -101,7 +101,7 @@ export default function BudgetView() {
     }
 
     return (
-        <div className="flex gap-4 flex-col">
+        <div className="flex gap-4 flex-col w-[min(100%,80rem)]">
             <h2 className="text-3xl">{userBudget.name}</h2>
             <div className="flex flex-col gap-4 bg-[#1B2227] rounded p-4 max-w-3xl">
                 <h2 className="text-xl">Add Transaction</h2>
