@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Entry } from "../Models/account";
+import { Entry, UserBudget } from "../Models/account";
 import { LoadBudgetAccount } from "../Services/storageService";
 import PrimaryButton from "./PrimaryButton";
 import { useBudget } from "./BudgetProvider";
+import Link from "next/link";
 
 export default function BudgetView() {
     const { userBudget, dispatch } = useBudget();
@@ -14,6 +15,8 @@ export default function BudgetView() {
     const [toAccountIndex, setToAccountIndex] = useState<number | "">("");
     const [amount, setAmount] = useState<number>(0);
     const [description, setDescription] = useState<string>("");
+    const [newAccountName, setNewAccountName] = useState<string>("");
+    const [newAccountUnit, setNewAccountUnit] = useState<string>("");
 
     useEffect(() => {
         LoadBudgetAccount().then(budget => {
@@ -55,6 +58,32 @@ export default function BudgetView() {
 
         setEntries([]);
         clearInputs();
+    }
+
+    function migrateBudget() {
+        const newBudget: UserBudget = {
+            name: newAccountName,
+            accounts: userBudget?.accounts || [],
+            unit: newAccountUnit,
+            isDefault: false,
+            transactions: userBudget?.transactions || []
+        };
+        dispatch({
+            type: "INIT", budgetAccount: newBudget
+        });
+    }
+
+    function createBudget() {
+        const newBudget: UserBudget = {
+            name: newAccountName,
+            accounts: [],
+            unit: newAccountUnit,
+            isDefault: false,
+            transactions: []
+        };
+        dispatch({
+            type: "INIT", budgetAccount: newBudget
+        });
     }
 
     function clearInputs() {
@@ -155,6 +184,35 @@ export default function BudgetView() {
                     </PrimaryButton>
                 </div>
             </div>
+            {userBudget.isDefault &&
+                <div className="flex flex-col gap-4">
+                    <h2 className="text-xl">First Time</h2>
+                    <div className="bg-[#0B1A16] rounded p-4 max-w-3xl flex flex-col items-start gap-2">
+                        <p>Since this is your first time visiting, a default budget has been created.</p>
+                        <p>This budget has some pre-configured accounts, feel free to add or remove these in the <Link href={"/accounts"}>Accounts</Link> section.</p>
+                        <p>To get rid of this dialog, enter the name of your budget account below and migrate or create fresh.</p>
+
+                        <div className="grid grid-cols-[120px_1fr] items-center gap-2">
+                            <label>Name:</label>
+                            <input
+                                className="bg-[#3A6F5E] p-1 rounded"
+                                type="text"
+                                onChange={e => setNewAccountName(e.target.value)} />
+                        </div>
+                        <div className="grid grid-cols-[120px_1fr] items-center gap-2">
+                            <label>Unit (e.g. kr, $):</label>
+                            <input
+                                className="bg-[#3A6F5E] p-1 rounded"
+                                type="text"
+                                onChange={e => setNewAccountUnit(e.target.value)} />
+                        </div>
+                        <div className="flex flex-row gap-2">
+                            <PrimaryButton disabled={!newAccountName || !newAccountUnit} onClick={migrateBudget}>Migrate</PrimaryButton>
+                            <PrimaryButton disabled={!newAccountName || !newAccountUnit} onClick={createBudget}>Create fresh</PrimaryButton>
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
     );
 }

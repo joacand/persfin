@@ -67,46 +67,63 @@ export default function Accounts() {
                     ))}
                 </div>
             </div>
-            <div className="flex flex-col flex-wrap items-start gap-4 bg-[#0B1A16] rounded p-4">
-                <div className="grid grid-cols-[120px_1fr] items-center gap-2">
-                    <label>Account type:</label>
-                    <select
-                        className="bg-[#3A6F5E] p-1 rounded"
-                        value={accountType}
-                        onChange={e => setAccountType(e.target.value)}>
-                        <option value=""></option>
-                        {ACCOUNT_TYPES.map((account) => (
-                            <option key={account} value={account}>
-                                {account}
-                            </option>
-                        ))}
-                    </select>
-                </div>
+            <div className="flex flex-row gap-2">
+                <div className="flex flex-col flex-wrap items-start gap-4 bg-[#0B1A16] rounded p-4">
+                    <div className="grid grid-cols-[120px_1fr] items-center gap-2">
+                        <label>Account type:</label>
+                        <select
+                            className="bg-[#3A6F5E] p-1 rounded"
+                            value={accountType}
+                            onChange={e => setAccountType(e.target.value)}>
+                            <option value=""></option>
+                            {ACCOUNT_TYPES.map((account) => (
+                                <option key={account} value={account}>
+                                    {account}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
 
-                <div className="grid grid-cols-[120px_1fr] items-center gap-2">
-                    <label>Name:</label>
-                    <input
-                        className="bg-[#3A6F5E] p-1 rounded"
-                        type="text"
-                        onChange={e => setName(e.target.value)}
-                        min={0}
-                        value={name} />
-                </div>
+                    <div className="grid grid-cols-[120px_1fr] items-center gap-2">
+                        <label>Name:</label>
+                        <input
+                            className="bg-[#3A6F5E] p-1 rounded"
+                            type="text"
+                            onChange={e => setName(e.target.value)}
+                            min={0}
+                            value={name} />
+                    </div>
 
-                <div className="grid grid-cols-[120px_1fr] items-center gap-2">
-                    <label>Description:</label>
-                    <input
-                        className="bg-[#3A6F5E] p-1 rounded"
-                        type="text"
-                        onChange={e => setDescription(e.target.value)}
-                        min={0}
-                        value={description} />
-                </div>
+                    <div className="grid grid-cols-[120px_1fr] items-center gap-2">
+                        <label>Description:</label>
+                        <input
+                            className="bg-[#3A6F5E] p-1 rounded"
+                            type="text"
+                            onChange={e => setDescription(e.target.value)}
+                            min={0}
+                            value={description} />
+                    </div>
 
-                <PrimaryButton disabled={accountType === "" || name.trim() === "" || description.trim() === ""} onClick={() => addAccount()}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M11 13H5v-2h6V5h2v6h6v2h-6v6h-2z" /></svg>
-                    Add
-                </PrimaryButton>
+                    <PrimaryButton disabled={accountType === "" || name.trim() === "" || description.trim() === ""} onClick={() => addAccount()}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M11 13H5v-2h6V5h2v6h6v2h-6v6h-2z" /></svg>
+                        Add
+                    </PrimaryButton>
+                </div>
+                <div className="flex flex-col flex-wrap gap-4 bg-[#0B1A16] rounded p-4">
+                    <p>Keep in mind to use the correct <strong>account type</strong> for your account. Here are some examples:</p>
+                    <ul>
+                        <li><strong>Asset:</strong> Cash, Bank Account, Inventory</li>
+                        <li><strong>Liability:</strong> Loans, Credit Card</li>
+                        <li><strong>Equity:</strong> Initial Equity, Retained Earnings</li>
+                        <li><strong>Revenue:</strong> Sales, Income (paycheck)</li>
+                        <li><strong>Expense:</strong> Rent, Utilities </li>
+                    </ul>
+                    <p>
+                        Investments such as a house, vehicle, or stocks are typically recorded as assets.
+                        Changes in value may be tracked over time, but gains or losses are usually only
+                        realized when the asset is sold.
+                    </p>
+                </div>
             </div>
         </div>
     );

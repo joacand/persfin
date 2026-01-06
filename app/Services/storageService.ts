@@ -25,14 +25,17 @@ export async function SaveBudgetAccount(budget: UserBudget): Promise<void> {
 export function DefaultBudgetAccount(): UserBudget {
     const defaultBudget =
         {
-            name: "Base Budget Account",
+            name: "Default Budget Account",
             accounts: [
-                { name: "Initial equity", description: "Initial Equity Account", type: { type: "Equity" }, id: crypto.randomUUID() },
+                { name: "Initial Equity", description: "Initial Equity Account", type: { type: "Equity" }, id: crypto.randomUUID() },
                 { name: "Bank Savings", description: "Bank Savings Account", type: { type: "Asset" }, id: crypto.randomUUID() },
+                { name: "Investments", description: "Investment Account", type: { type: "Asset" }, id: crypto.randomUUID() },
+                { name: "Credit Card Account", description: "Credit Card Account", type: { type: "Liability" }, id: crypto.randomUUID() },
                 { name: "Loans", description: "Loan Account", type: { type: "Liability" }, id: crypto.randomUUID() },
                 { name: "Income", description: "Income Revenue Account", type: { type: "Revenue" }, id: crypto.randomUUID() },
                 { name: "Expense", description: "Default Expense Account", type: { type: "Expense" }, id: crypto.randomUUID() }
             ],
+            isDefault: true,
             unit: "kr",
             transactions: []
         } as UserBudget;
