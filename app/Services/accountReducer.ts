@@ -55,7 +55,7 @@ export function accountReducer(state: UserBudget, action: BudgetAction): UserBud
         const accountToRemove = budget.accounts.find(a => a.id === account.id);
         if (!accountToRemove) { return budget; }
 
-        if (budget.transactions.some(t => t.entries.some(e => e.account.id === account.id))) {
+        if (budget.transactions.some(t => t.entries.some(e => e.accountId === account.id))) {
             return {
                 ...budget,
                 errors: [`Cannot remove account "${account.name}" because it has transactions.`]
@@ -95,7 +95,7 @@ export function accountReducer(state: UserBudget, action: BudgetAction): UserBud
         const reversedEntries: Entry[] = transactionToModify.entries.map(entry => {
             return {
                 type: entry.type === "Debit" ? "Credit" : "Debit" as ModifierType,
-                account: entry.account,
+                accountId: entry.accountId,
                 amount: entry.amount
             }
         }

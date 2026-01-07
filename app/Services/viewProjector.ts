@@ -17,7 +17,10 @@ export default function Project(userBudget: UserBudget): Projection {
 
     for (const transaction of userBudget.transactions) {
         for (const entry of transaction.entries) {
-            const accountType = entry.account.type.type;
+            const account = userBudget.accounts.find(x => x.id === entry.accountId);
+            if (!account) { continue; }
+
+            const accountType = account.type.type;
             const amount = entry.amount;
 
             switch (accountType) {

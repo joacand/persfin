@@ -6,6 +6,9 @@ import { LoadBudgetAccount } from "../Services/storageService";
 import PrimaryButton from "./PrimaryButton";
 import { useBudget } from "./BudgetProvider";
 import Link from "next/link";
+import Input from "./Input";
+import Select from "./Select";
+import Base from "./Base";
 
 export default function BudgetView() {
     const { userBudget, dispatch } = useBudget();
@@ -37,8 +40,8 @@ export default function BudgetView() {
         const toAccount = userBudget.accounts[toAccountIndex];
 
         const newEntries = [...entries];
-        newEntries.push({ type: "Credit", account: fromAccount, amount: amount });
-        newEntries.push({ type: "Debit", account: toAccount, amount: amount });
+        newEntries.push({ type: "Credit", accountId: fromAccount.id, amount: amount });
+        newEntries.push({ type: "Debit", accountId: toAccount.id, amount: amount });
         setEntries(newEntries);
 
         clearInputs();
@@ -101,7 +104,7 @@ export default function BudgetView() {
     }
 
     return (
-        <div className="flex gap-4 flex-col w-[min(100%,80rem)]">
+        <Base>
             <h2 className="text-3xl">{userBudget.name}</h2>
             <div className="flex flex-col gap-4 bg-[#1B2227] rounded p-4 max-w-3xl">
                 <h2 className="text-xl">Add Transaction</h2>
@@ -110,8 +113,7 @@ export default function BudgetView() {
 
                 <div className="grid grid-cols-[80px_1fr] items-center gap-2">
                     <label>From:</label>
-                    <select
-                        className="bg-[#3A6F5E] p-1 rounded"
+                    <Select
                         value={fromAccountIndex}
                         onChange={e => setFromAccountIndex(e.target.value === "" ? "" : Number(e.target.value))}>
                         <option value=""></option>
@@ -120,13 +122,12 @@ export default function BudgetView() {
                                 {account.name}
                             </option>
                         ))}
-                    </select>
+                    </Select>
                 </div>
 
                 <div className="grid grid-cols-[80px_1fr] items-center gap-2">
                     <label>To:</label>
-                    <select
-                        className="bg-[#3A6F5E] p-1 rounded"
+                    <Select
                         value={toAccountIndex}
                         onChange={e => setToAccountIndex(e.target.value === "" ? "" : Number(e.target.value))}>
                         <option value=""></option>
@@ -135,17 +136,12 @@ export default function BudgetView() {
                                 {account.name}
                             </option>
                         ))}
-                    </select>
+                    </Select>
                 </div>
 
                 <div className="grid grid-cols-[80px_1fr] items-center gap-2">
                     <label>Amount:</label>
-                    <input
-                        className="bg-[#3A6F5E] p-1 rounded"
-                        type="number"
-                        min={0}
-                        onChange={trySetAmount}
-                        value={amount} />
+                    <Input type="number" min={0} onChange={trySetAmount} value={amount} />
                 </div>
 
                 <div className="flex justify-end">
@@ -163,7 +159,7 @@ export default function BudgetView() {
                     <div className="flex flex-col gap-1">
                         {entries.map((entry, index) => (
                             <p key={index}>
-                                {entry.type} {entry.amount} - {entry.account.name}
+                                {entry.type} {entry.amount} - {userBudget.accounts.find(x => x.id === entry.accountId)?.name}
                             </p>
                         ))}
                     </div>
@@ -171,10 +167,7 @@ export default function BudgetView() {
 
                 <div className="grid grid-cols-[80px_1fr] items-center gap-2">
                     <label>Description:</label>
-                    <input
-                        className="bg-[#3A6F5E] p-1 rounded"
-                        type="text"
-                        onChange={e => setDescription(e.target.value)} />
+                    <Input type="text" onChange={e => setDescription(e.target.value)} />
                 </div>
 
                 <div className="flex justify-end">
@@ -194,17 +187,11 @@ export default function BudgetView() {
 
                         <div className="grid grid-cols-[120px_1fr] items-center gap-2">
                             <label>Name:</label>
-                            <input
-                                className="bg-[#3A6F5E] p-1 rounded"
-                                type="text"
-                                onChange={e => setNewAccountName(e.target.value)} />
+                            <Input type="text" onChange={e => setNewAccountName(e.target.value)} />
                         </div>
                         <div className="grid grid-cols-[120px_1fr] items-center gap-2">
                             <label>Unit (e.g. kr, $):</label>
-                            <input
-                                className="bg-[#3A6F5E] p-1 rounded"
-                                type="text"
-                                onChange={e => setNewAccountUnit(e.target.value)} />
+                            <Input type="text" onChange={e => setNewAccountUnit(e.target.value)} />
                         </div>
                         <div className="flex flex-row gap-2">
                             <PrimaryButton disabled={!newAccountName || !newAccountUnit} onClick={migrateBudget}>Migrate</PrimaryButton>
@@ -213,6 +200,6 @@ export default function BudgetView() {
                     </div>
                 </div>
             }
-        </div>
+        </Base>
     );
 }

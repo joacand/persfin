@@ -30,7 +30,7 @@ export type Transaction = {
 
 export type Entry = {
     type: ModifierType;
-    account: Account;
+    accountId: string;
     amount: number;
 }
 
