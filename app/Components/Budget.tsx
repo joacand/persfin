@@ -9,8 +9,10 @@ import Link from "next/link";
 import Input from "./Input";
 import Select from "./Select";
 import Base from "./Base";
+import { useAuth } from "./AuthContext";
 
 export default function BudgetView() {
+    const { user } = useAuth();
     const { userBudget, dispatch } = useBudget();
     const [entries, setEntries] = useState<Entry[]>([]);
 
@@ -22,10 +24,11 @@ export default function BudgetView() {
     const [newAccountUnit, setNewAccountUnit] = useState<string>("");
 
     useEffect(() => {
-        LoadBudgetAccount().then(budget => {
+        if (!user) { return; }
+        LoadBudgetAccount(user.uid).then(budget => {
             dispatch({ type: "INIT", budgetAccount: budget });
         });
-    }, []);
+    }, [user]);
 
     if (!userBudget) { return <p>Loading...</p> }
 

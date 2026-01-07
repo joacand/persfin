@@ -37,6 +37,7 @@ export type Entry = {
 // Actions for the reducer
 export type BudgetAction =
     | { type: "INIT", budgetAccount: UserBudget }
+    | { type: "RESET" }
     | { type: "ADD_TRANSACTION", transaction: Transaction }
     | { type: "ADD_TRANSACTIONS", transactions: Transaction[] }
     | { type: "REVERT_TRANSACTION", transaction: Transaction } // Reverts a transaction by adding a new transaction with opposite entries.
