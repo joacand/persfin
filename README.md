@@ -7,15 +7,15 @@ The app allows you to track your bank accounts, income, expenses, loans, and inv
 * Add transactions conisting of multiple entries
 * Revert or remove transactions
 * Display statistics
+* Authentication and persistance through [Firebase](https://firebase.google.com/)
 
 ## Tech Stack
 - React
 - Next.js
 
 ## To do
-* Add graphs and other useful statistical tools
-* Make it user-friendly
-* Come up with a better application name
+* Add more graphs and other useful statistical tools
+* Make it more user friendly
 
 ## Build and Deploy
 Install dependencies:
