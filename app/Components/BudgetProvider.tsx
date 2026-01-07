@@ -2,8 +2,9 @@
 
 import { createContext, useContext, useEffect, useReducer } from "react";
 import { BudgetAction, UserBudget } from "../Models/account";
-import { DefaultBudgetAccount, LoadBudgetAccount, SaveBudgetAccount } from "../Services/storageService";
+import { LoadBudgetAccount, SaveBudgetAccount } from "../Services/storageService";
 import { accountReducer } from "../Services/accountReducer";
+import { useAuth } from "./AuthContext";
 
 type BudgetContextType = {
     userBudget: UserBudget | null;
@@ -13,17 +14,20 @@ type BudgetContextType = {
 const BudgetContext = createContext<BudgetContextType | undefined>(undefined);
 
 export function BudgetProvider({ children }: { children: React.ReactNode }) {
-    const [userBudget, dispatch] = useReducer(accountReducer, DefaultBudgetAccount());
+    const { user } = useAuth();
+    const [userBudget, dispatch] = useReducer(accountReducer, null);
 
     useEffect(() => {
-        LoadBudgetAccount().then(budget => {
+        if (!user) { return; }
+        LoadBudgetAccount(user.uid).then(budget => {
             dispatch({ type: "INIT", budgetAccount: budget });
         });
-    }, []);
+    }, [user]);
 
     useEffect(() => {
-        if (userBudget) SaveBudgetAccount(userBudget);
-    }, [userBudget]);
+        if (!user) { return; }
+        if (userBudget) SaveBudgetAccount(user.uid, userBudget);
+    }, [user, userBudget]);
 
     return (
         <BudgetContext.Provider value={{ userBudget, dispatch }}>

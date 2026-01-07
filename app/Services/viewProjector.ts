@@ -41,6 +41,7 @@ export default function Project(userBudget: UserBudget): Projection {
                     break;
             }
 
+            console.log(transaction.date);
             const date =
                 transaction.date instanceof Date
                     ? transaction.date

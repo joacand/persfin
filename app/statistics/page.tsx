@@ -12,6 +12,7 @@ export default function Statistics() {
 
     useEffect(() => {
         if (userBudget) {
+            console.log(userBudget);
             const projection = Project(userBudget);
             // eslint-disable-next-line react-hooks/set-state-in-effect
             setProjection(projection);

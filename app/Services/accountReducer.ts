@@ -1,10 +1,16 @@
 import { Account, BudgetAction, Entry, ModifierType, Transaction, UserBudget } from "../Models/account";
-import { SaveBudgetAccount } from "./storageService";
 
-export function accountReducer(state: UserBudget, action: BudgetAction): UserBudget {
+export function accountReducer(state: UserBudget | null, action: BudgetAction): UserBudget | null {
+
+    if (action.type === "INIT") {
+        return action.budgetAccount;
+    }
+
+    if (!state) { return state; }
+
     switch (action.type) {
-        case "INIT": {
-            return action.budgetAccount;
+        case "RESET": {
+            return null;
         }
         case "ADD_TRANSACTION": {
             return addTransaction(state, action.transaction);
@@ -38,7 +44,6 @@ export function accountReducer(state: UserBudget, action: BudgetAction): UserBud
             ...budget,
             transactions: [...budget.transactions, transaction]
         };
-        SaveBudgetAccount(newBudget);
         return newBudget;
     }
 
@@ -47,7 +52,6 @@ export function accountReducer(state: UserBudget, action: BudgetAction): UserBud
             ...budget,
             accounts: [...budget.accounts, account]
         };
-        SaveBudgetAccount(newBudget);
         return newBudget;
     }
 
@@ -67,7 +71,6 @@ export function accountReducer(state: UserBudget, action: BudgetAction): UserBud
             ...budget,
             accounts: newAccounts
         };
-        SaveBudgetAccount(newBudget);
         return newBudget;
     }
 
@@ -111,7 +114,6 @@ export function accountReducer(state: UserBudget, action: BudgetAction): UserBud
             ...state,
             transactions: finalTransactions
         };
-        SaveBudgetAccount(newBudget);
         return newBudget;
     }
 
@@ -121,7 +123,6 @@ export function accountReducer(state: UserBudget, action: BudgetAction): UserBud
             ...state,
             transactions: newTransactions
         };
-        SaveBudgetAccount(newBudget);
         return newBudget;
     }
 }
