@@ -37,8 +37,8 @@ export default function BudgetView() {
         const toAccount = userBudget.accounts[toAccountIndex];
 
         const newEntries = [...entries];
-        newEntries.push({ type: "Credit", account: fromAccount, amount: amount });
-        newEntries.push({ type: "Debit", account: toAccount, amount: amount });
+        newEntries.push({ type: "Credit", accountId: fromAccount.id, amount: amount });
+        newEntries.push({ type: "Debit", accountId: toAccount.id, amount: amount });
         setEntries(newEntries);
 
         clearInputs();
@@ -163,7 +163,7 @@ export default function BudgetView() {
                     <div className="flex flex-col gap-1">
                         {entries.map((entry, index) => (
                             <p key={index}>
-                                {entry.type} {entry.amount} - {entry.account.name}
+                                {entry.type} {entry.amount} - {userBudget.accounts.find(x => x.id === entry.accountId)?.name}
                             </p>
                         ))}
                     </div>

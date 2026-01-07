@@ -36,7 +36,7 @@ export default function Transactions() {
                             <div className="flex flex-col">
                                 {transaction.entries.map((entry, entryIndex) => (
                                     <div key={entryIndex}>
-                                        <p>{entry.type} {entry.amount} - {entry.account.name}</p>
+                                        <p>{entry.type} {entry.amount} - {userBudget.accounts.find(x => x.id === entry.accountId)?.name}</p>
                                     </div>
                                 ))}
                             </div>
