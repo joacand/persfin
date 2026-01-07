@@ -4,6 +4,8 @@ import "./globals.css";
 import Header from "./Components/Header";
 import Navigation from "./Components/Navigation";
 import { BudgetProvider } from "./Components/BudgetProvider";
+import { AuthProvider } from "./Components/AuthContext";
+import AuthCheck from "./Components/LoginCheck";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -43,19 +45,23 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <BudgetProvider>
-          <div className="flex flex-row justify-center min-h-screen bg-[#0E1114] text-white">
-            <div className="flex flex-col items-center w-full">
-              <div className="flex flex-row flex-wrap justify-center items-center px-4 gap-4 bg-[#151A1E] w-full">
-                <Header />
-                <Navigation />
+        <AuthProvider>
+          <BudgetProvider>
+            <div className="flex flex-row justify-center min-h-screen bg-[#0E1114] text-white">
+              <div className="flex flex-col items-center w-full">
+                <div className="flex flex-row flex-wrap justify-center items-center px-4 gap-4 bg-[#151A1E] w-full">
+                  <Header />
+                  <Navigation />
+                </div>
+                <main className="flex flex-col flex-1 bg-[#151A1E] p-4 rounded w-[min(100%,80rem)] m-5 items-center">
+                  <AuthCheck>
+                    {children}
+                  </AuthCheck>
+                </main>
               </div>
-              <main className="flex flex-col flex-1 bg-[#151A1E] p-4 rounded w-[min(100%,80rem)] m-5 items-center">
-                {children}
-              </main>
             </div>
-          </div>
-        </BudgetProvider>
+          </BudgetProvider>
+        </AuthProvider>
       </body>
     </html>
   );
