@@ -4,6 +4,9 @@ import PrimaryButton from "../Components/PrimaryButton";
 import { useBudget } from "../Components/BudgetProvider";
 import { useState } from "react";
 import { Account, AccountType } from "../Models/account";
+import Input from "../Components/Input";
+import Select from "../Components/Select";
+import Base from "../Components/Base";
 
 export default function Accounts() {
     const { userBudget, dispatch } = useBudget();
@@ -50,7 +53,7 @@ export default function Accounts() {
     }
 
     return (
-        <div className="flex gap-4 flex-col items-start">
+        <Base className="items-start">
             <h2 className="text-3xl">Accounts</h2>
             <div className="flex flex-col flex-wrap items-start gap-4 bg-[#1B2227] rounded p-4">
                 {userBudget.accounts.length === 0 && <p>No accounts available.</p>}
@@ -71,8 +74,7 @@ export default function Accounts() {
                 <div className="flex flex-col flex-wrap items-start gap-4 bg-[#1B2227] rounded p-4">
                     <div className="grid grid-cols-[120px_1fr] items-center gap-2">
                         <label>Account type:</label>
-                        <select
-                            className="bg-[#3A6F5E] p-1 rounded"
+                        <Select
                             value={accountType}
                             onChange={e => setAccountType(e.target.value)}>
                             <option value=""></option>
@@ -81,27 +83,17 @@ export default function Accounts() {
                                     {account}
                                 </option>
                             ))}
-                        </select>
+                        </Select>
                     </div>
 
                     <div className="grid grid-cols-[120px_1fr] items-center gap-2">
                         <label>Name:</label>
-                        <input
-                            className="bg-[#3A6F5E] p-1 rounded"
-                            type="text"
-                            onChange={e => setName(e.target.value)}
-                            min={0}
-                            value={name} />
+                        <Input type="text" onChange={e => setName(e.target.value)} min={0} value={name} />
                     </div>
 
                     <div className="grid grid-cols-[120px_1fr] items-center gap-2">
                         <label>Description:</label>
-                        <input
-                            className="bg-[#3A6F5E] p-1 rounded"
-                            type="text"
-                            onChange={e => setDescription(e.target.value)}
-                            min={0}
-                            value={description} />
+                        <Input type="text" onChange={e => setDescription(e.target.value)} min={0} value={description} />
                     </div>
 
                     <PrimaryButton disabled={accountType === "" || name.trim() === "" || description.trim() === ""} onClick={() => addAccount()}>
@@ -125,6 +117,6 @@ export default function Accounts() {
                     </p>
                 </div>
             </div>
-        </div>
+        </Base>
     );
 }

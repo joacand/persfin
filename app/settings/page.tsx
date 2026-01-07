@@ -4,6 +4,8 @@ import PrimaryButton from "../Components/PrimaryButton";
 import { useBudget } from "../Components/BudgetProvider";
 import { useEffect, useState } from "react";
 import { UserBudget } from "../Models/account";
+import Input from "../Components/Input";
+import Base from "../Components/Base";
 
 export default function Settings() {
     const { userBudget, dispatch } = useBudget();
@@ -35,29 +37,21 @@ export default function Settings() {
     }
 
     return (
-        <div className="flex gap-4 flex-col w-[min(100%,80rem)]">
+        <Base>
             <h2 className="text-3xl">Settings</h2>
             <div className="flex gap-4 flex-col items-start bg-[#1B2227] rounded p-4 max-w-md">
                 <div className="grid grid-cols-[120px_1fr] items-center gap-2">
                     <label>Name:</label>
-                    <input
-                        className="bg-[#3A6F5E] p-1 rounded"
-                        type="text"
-                        value={newAccountName}
-                        onChange={e => setNewAccountName(e.target.value)} />
+                    <Input type="text" value={newAccountName} onChange={e => setNewAccountName(e.target.value)} />
                 </div>
                 <div className="grid grid-cols-[120px_1fr] items-center gap-2">
                     <label>Unit (e.g. kr, $):</label>
-                    <input
-                        className="bg-[#3A6F5E] p-1 rounded"
-                        type="text"
-                        value={newAccountUnit}
-                        onChange={e => setNewAccountUnit(e.target.value)} />
+                    <Input type="text" value={newAccountUnit} onChange={e => setNewAccountUnit(e.target.value)} />
                 </div>
                 <div className="flex flex-row gap-2">
                     <PrimaryButton disabled={!newAccountName || !newAccountUnit} onClick={save}>Save</PrimaryButton>
                 </div>
             </div>
-        </div>
+        </Base>
     );
 }

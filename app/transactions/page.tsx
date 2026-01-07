@@ -3,6 +3,7 @@
 import PrimaryButton from "../Components/PrimaryButton";
 import { Transaction } from "../Models/account";
 import { useBudget } from "../Components/BudgetProvider";
+import Base from "../Components/Base";
 
 export default function Transactions() {
     const { userBudget, dispatch } = useBudget();
@@ -24,7 +25,7 @@ export default function Transactions() {
     }
 
     return (
-        <div className="flex gap-4 flex-col w-[min(100%,80rem)]">
+        <Base>
             <h2 className="text-3xl">Transactions</h2>
             {userBudget.transactions.length === 0 && <p>No transactions available.</p>}
             <div className="flex flex-col gap-4 bg-[#1B2227] rounded p-4 flex-wrap">
@@ -54,6 +55,6 @@ export default function Transactions() {
                     </div>
                 ))}
             </div>
-        </div>
+        </Base>
     );
 }

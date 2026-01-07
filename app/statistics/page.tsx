@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Project, { Projection } from "../Services/viewProjector";
 import { useBudget } from "../Components/BudgetProvider";
 import { Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import Base from "../Components/Base";
 
 export default function Statistics() {
     const { userBudget } = useBudget();
@@ -22,7 +23,7 @@ export default function Statistics() {
     }
 
     return (
-        <div className="flex gap-4 flex-col w-[min(100%,80rem)]">
+        <Base>
             <h2 className="text-3xl">Statistics</h2>
             <div className="flex flex-col gap-4 bg-[#1B2227] rounded p-4">
                 <p>Assets: {projection.assets} {userBudget.unit}</p>
@@ -49,6 +50,6 @@ export default function Statistics() {
                     </LineChart>
                 </ResponsiveContainer>
             </div>
-        </div>
+        </Base>
     );
 }
