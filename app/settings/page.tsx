@@ -6,8 +6,11 @@ import { useEffect, useState } from "react";
 import { UserBudget } from "../Models/account";
 import Input from "../Components/Input";
 import Base from "../Components/Base";
+import { ResetBudgetAccount } from "../Services/storageService";
+import { useAuth } from "../Components/AuthContext";
 
 export default function Settings() {
+    const { user } = useAuth();
     const { userBudget, dispatch } = useBudget();
 
     const [newAccountName, setNewAccountName] = useState<string>("");
@@ -36,6 +39,16 @@ export default function Settings() {
         dispatch({ type: "INIT", budgetAccount: updatedBudget });
     }
 
+    function resetData() {
+        if (!user) { return; }
+        if (window.confirm("Are you sure you want to remove all data? This cannot be undone.")) {
+            dispatch({ type: "RESET" });
+            ResetBudgetAccount(user.uid).then((budget) => {
+                dispatch({ type: "INIT", budgetAccount: budget });
+            });
+        }
+    }
+
     return (
         <Base>
             <h2 className="text-3xl">Settings</h2>
@@ -48,8 +61,9 @@ export default function Settings() {
                     <label>Unit (e.g. kr, $):</label>
                     <Input type="text" value={newAccountUnit} onChange={e => setNewAccountUnit(e.target.value)} />
                 </div>
-                <div className="flex flex-row gap-2">
+                <div className="flex flex-row gap-2 justify-between w-full">
                     <PrimaryButton disabled={!newAccountName || !newAccountUnit} onClick={save}>Save</PrimaryButton>
+                    <PrimaryButton className="bg-[#E05D5D] hover:bg-[#A05D5D]" onClick={resetData}>Reset account (remove all data)</PrimaryButton>
                 </div>
             </div>
         </Base>

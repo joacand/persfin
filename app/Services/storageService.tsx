@@ -31,8 +31,14 @@ export async function LoadBudgetAccount(userId: string): Promise<UserBudget> {
     return defaultBudget;
 }
 
+export async function ResetBudgetAccount(userId: string): Promise<UserBudget> {
+    const defaultBudget = DefaultBudgetAccount();
+    await SaveBudgetAccount(userId, defaultBudget);
+    return defaultBudget;
+}
+
 export async function SaveBudgetAccount(userId: string, budget: UserBudget): Promise<void> {
-    const ref = budgetDocRef(userId);5
+    const ref = budgetDocRef(userId);
     await setDoc(ref, {
         data: {
             ...budget,
