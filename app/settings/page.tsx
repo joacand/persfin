@@ -52,20 +52,20 @@ export default function Settings() {
     return (
         <Base>
             <h2 className="text-3xl">Settings</h2>
-            <div className="flex gap-4 flex-col items-start bg-[#1B2227] rounded p-4 max-w-md">
+            <form className="flex gap-4 flex-col items-start bg-[#1B2227] rounded p-4 max-w-md" onSubmit={(e) => { e.preventDefault(); save(); }}>
                 <div className="grid grid-cols-[120px_1fr] items-center gap-2">
                     <label>Name:</label>
-                    <Input type="text" value={newAccountName} onChange={e => setNewAccountName(e.target.value)} />
+                    <Input type="text" required value={newAccountName} onChange={e => setNewAccountName(e.target.value)} />
                 </div>
                 <div className="grid grid-cols-[120px_1fr] items-center gap-2">
                     <label>Unit (e.g. kr, $):</label>
-                    <Input type="text" value={newAccountUnit} onChange={e => setNewAccountUnit(e.target.value)} />
+                    <Input type="text" required value={newAccountUnit} onChange={e => setNewAccountUnit(e.target.value)} />
                 </div>
                 <div className="flex flex-row gap-2 justify-between w-full">
-                    <PrimaryButton disabled={!newAccountName || !newAccountUnit} onClick={save}>Save</PrimaryButton>
+                    <PrimaryButton type="submit">Save</PrimaryButton>
                     <PrimaryButton className="bg-[#E05D5D] hover:bg-[#A05D5D]" onClick={resetData}>Reset account (remove all data)</PrimaryButton>
                 </div>
-            </div>
+            </form>
         </Base>
     );
 }

@@ -124,16 +124,14 @@ export default function BudgetView() {
 
     return (
         <Base>
-            <h2 className="text-3xl">{userBudget.name}</h2>
-            <div className="flex flex-col gap-4 bg-[#1B2227] rounded p-4 max-w-3xl">
-                <h2 className="text-xl">Add Transaction</h2>
-
-                <hr />
-
+            <h2 className="text-3xl">{userBudget.name} - Transactions</h2>
+            <form className="flex flex-col gap-4 bg-[#1B2227] rounded p-4 max-w-3xl"
+                onSubmit={(e) => { e.preventDefault(); addEntry(); }}>
                 <div className="grid grid-cols-[80px_1fr] items-center gap-2">
                     <label>From:</label>
                     <Select
                         name="fromAccountIndex"
+                        required
                         value={entryForm.fromAccountIndex}
                         onChange={handleChange}>
                         <option value=""></option>
@@ -149,6 +147,7 @@ export default function BudgetView() {
                     <label>To:</label>
                     <Select
                         name="toAccountIndex"
+                        required
                         value={entryForm.toAccountIndex}
                         onChange={handleChange}>
                         <option value=""></option>
@@ -162,18 +161,19 @@ export default function BudgetView() {
 
                 <div className="grid grid-cols-[80px_1fr] items-center gap-2">
                     <label>Amount:</label>
-                    <Input type="number" min={0} onChange={trySetAmount} value={entryForm.amount} />
+                    <Input type="number" required min={1} onChange={trySetAmount} value={entryForm.amount} />
                 </div>
 
                 <div className="flex justify-end">
-                    <PrimaryButton disabled={entryForm.amount <= 0 || entryForm.fromAccountIndex === "" || entryForm.toAccountIndex === ""} onClick={addEntry}>
+                    <PrimaryButton type="submit">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M11 13H5v-2h6V5h2v6h6v2h-6v6h-2z" /></svg>
                         Add
                     </PrimaryButton>
                 </div>
+            </form>
 
-                <hr />
-
+            <form className="flex flex-col gap-4 bg-[#1B2227] rounded p-4 max-w-3xl"
+                onSubmit={(e) => { e.preventDefault(); finishTransaction(); }}>
                 <div>
                     <h3>Current Entries:</h3>
                     {entries.length === 0 && <p className="text-sm">No entries added.</p>}
@@ -192,33 +192,34 @@ export default function BudgetView() {
                 </div>
 
                 <div className="flex justify-end">
-                    <PrimaryButton disabled={entries.length === 0} onClick={finishTransaction}>
+                    <PrimaryButton disabled={entries.length === 0} type="submit" onClick={finishTransaction}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="m9.55 15.15l8.475-8.475q.3-.3.7-.3t.7.3t.3.713t-.3.712l-9.175 9.2q.3.3-.7.3t-.7-.3L4.55 13q-.3-.3-.288-.712t.313-.713t.713-.3t.712.3z" /></svg>
                         Finish
                     </PrimaryButton>
                 </div>
-            </div>
+            </form>
             {userBudget.isDefault &&
                 <div className="flex flex-col gap-4">
                     <h2 className="text-xl">First Time</h2>
-                    <div className="bg-[#1B2227] rounded p-4 max-w-3xl flex flex-col items-start gap-2">
+                    <form className="bg-[#1B2227] rounded p-4 max-w-3xl flex flex-col items-start gap-2"
+                        onSubmit={(e) => { e.preventDefault(); migrateBudget(); }}>
                         <p>Since this is your first time visiting, a default budget has been created.</p>
                         <p>This budget has some pre-configured accounts, feel free to add or remove these in the <Link href={"/accounts"}>Accounts</Link> section.</p>
                         <p>To get rid of this dialog, enter the name of your budget account below and migrate or create fresh.</p>
 
                         <div className="grid grid-cols-[120px_1fr] items-center gap-2">
                             <label>Name:</label>
-                            <Input type="text" onChange={e => setNewAccountName(e.target.value)} />
+                            <Input type="text" required onChange={e => setNewAccountName(e.target.value)} />
                         </div>
                         <div className="grid grid-cols-[120px_1fr] items-center gap-2">
                             <label>Unit (e.g. kr, $):</label>
-                            <Input type="text" onChange={e => setNewAccountUnit(e.target.value)} />
+                            <Input type="text" required onChange={e => setNewAccountUnit(e.target.value)} />
                         </div>
                         <div className="flex flex-row gap-2">
-                            <PrimaryButton disabled={!newAccountName || !newAccountUnit} onClick={migrateBudget}>Migrate</PrimaryButton>
+                            <PrimaryButton type="submit">Migrate</PrimaryButton>
                             <PrimaryButton disabled={!newAccountName || !newAccountUnit} onClick={createBudget}>Create fresh</PrimaryButton>
                         </div>
-                    </div>
+                    </form>
                 </div>
             }
         </Base>

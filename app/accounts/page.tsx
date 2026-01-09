@@ -82,13 +82,18 @@ export default function Accounts() {
                 </div>
             </div>
             <div className="flex flex-row gap-2">
-                <div className="flex flex-col flex-wrap items-start gap-4 bg-[#1B2227] rounded p-4">
+                <form className="flex flex-col flex-wrap items-start gap-4 bg-[#1B2227] rounded p-4"
+                    onSubmit={(e) => {
+                        e.preventDefault();
+                        addAccount();
+                    }}>
                     <div className="grid grid-cols-[120px_1fr] items-center gap-2">
                         <label>Account type:</label>
                         <Select
                             name="accountType"
                             value={accountForm.accountType}
-                            onChange={handleChange}>
+                            onChange={handleChange}
+                            required>
                             <option value=""></option>
                             {ACCOUNT_TYPES.map((account) => (
                                 <option key={account} value={account}>
@@ -100,19 +105,19 @@ export default function Accounts() {
 
                     <div className="grid grid-cols-[120px_1fr] items-center gap-2">
                         <label>Name:</label>
-                        <Input type="text" name="name" onChange={handleChange} min={0} value={accountForm.name} />
+                        <Input type="text" name="name" required onChange={handleChange} min={0} value={accountForm.name} />
                     </div>
 
                     <div className="grid grid-cols-[120px_1fr] items-center gap-2">
                         <label>Description:</label>
-                        <Input type="text" name="description" onChange={handleChange} min={0} value={accountForm.description} />
+                        <Input type="text" name="description" required onChange={handleChange} min={0} value={accountForm.description} />
                     </div>
 
-                    <PrimaryButton disabled={accountForm.accountType === "" || accountForm.name.trim() === "" || accountForm.description.trim() === ""} onClick={() => addAccount()}>
+                    <PrimaryButton type="submit">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M11 13H5v-2h6V5h2v6h6v2h-6v6h-2z" /></svg>
                         Add
                     </PrimaryButton>
-                </div>
+                </form>
                 <div className="flex flex-col flex-wrap gap-4 bg-[#1B2227] rounded p-4">
                     <p>Keep in mind to use the correct <strong>account type</strong> for your account. Here are some examples:</p>
                     <ul>
