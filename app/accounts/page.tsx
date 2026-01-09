@@ -2,7 +2,7 @@
 
 import PrimaryButton from "../Components/PrimaryButton";
 import { useBudget } from "../Components/BudgetProvider";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { Account, AccountType } from "../Models/account";
 import Input from "../Components/Input";
 import Select from "../Components/Select";
@@ -11,9 +11,11 @@ import Base from "../Components/Base";
 export default function Accounts() {
     const { userBudget, dispatch } = useBudget();
 
-    const [accountType, setAccountType] = useState<string>("");
-    const [name, setName] = useState<string>("");
-    const [description, setDescription] = useState<string>("");
+    const [accountForm, setAccountForm] = useState({
+        accountType: "",
+        name: "",
+        description: ""
+    });
 
     if (!userBudget) {
         return <p>Loading...</p>;
@@ -28,28 +30,37 @@ export default function Accounts() {
     ] as const;
 
     function addAccount() {
-        if (accountType === "") { return; }
+        if (accountForm.accountType === "") { return; }
         dispatch({
             type: "ADD_ACCOUNT", account: {
                 id: crypto.randomUUID(),
-                name,
-                description,
-                type: { type: accountType } as AccountType
+                name: accountForm.name,
+                description: accountForm.description,
+                type: { type: accountForm.accountType } as AccountType
             }
         });
         clearInputs();
-    }
-
-    function clearInputs() {
-        setAccountType("");
-        setName("");
-        setDescription("");
     }
 
     function removeAccount(account: Account) {
         dispatch({
             type: "REMOVE_ACCOUNT", account
         });
+    }
+
+    function clearInputs() {
+        setAccountForm({
+            accountType: "",
+            name: "",
+            description: ""
+        });
+    }
+
+    function handleChange(e: ChangeEvent<HTMLSelectElement> | ChangeEvent<HTMLInputElement>) {
+        setAccountForm(prev => ({
+            ...prev,
+            [e.target.name]: e.target.value
+        }));
     }
 
     return (
@@ -75,8 +86,9 @@ export default function Accounts() {
                     <div className="grid grid-cols-[120px_1fr] items-center gap-2">
                         <label>Account type:</label>
                         <Select
-                            value={accountType}
-                            onChange={e => setAccountType(e.target.value)}>
+                            name="accountType"
+                            value={accountForm.accountType}
+                            onChange={handleChange}>
                             <option value=""></option>
                             {ACCOUNT_TYPES.map((account) => (
                                 <option key={account} value={account}>
@@ -88,15 +100,15 @@ export default function Accounts() {
 
                     <div className="grid grid-cols-[120px_1fr] items-center gap-2">
                         <label>Name:</label>
-                        <Input type="text" onChange={e => setName(e.target.value)} min={0} value={name} />
+                        <Input type="text" name="name" onChange={handleChange} min={0} value={accountForm.name} />
                     </div>
 
                     <div className="grid grid-cols-[120px_1fr] items-center gap-2">
                         <label>Description:</label>
-                        <Input type="text" onChange={e => setDescription(e.target.value)} min={0} value={description} />
+                        <Input type="text" name="description" onChange={handleChange} min={0} value={accountForm.description} />
                     </div>
 
-                    <PrimaryButton disabled={accountType === "" || name.trim() === "" || description.trim() === ""} onClick={() => addAccount()}>
+                    <PrimaryButton disabled={accountForm.accountType === "" || accountForm.name.trim() === "" || accountForm.description.trim() === ""} onClick={() => addAccount()}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M11 13H5v-2h6V5h2v6h6v2h-6v6h-2z" /></svg>
                         Add
                     </PrimaryButton>

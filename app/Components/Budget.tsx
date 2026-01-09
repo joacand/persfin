@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Entry, UserBudget } from "../Models/account";
 import { LoadBudgetAccount } from "../Services/storageService";
 import PrimaryButton from "./PrimaryButton";
@@ -16,9 +16,16 @@ export default function BudgetView() {
     const { userBudget, dispatch } = useBudget();
     const [entries, setEntries] = useState<Entry[]>([]);
 
-    const [fromAccountIndex, setFromAccountIndex] = useState<number | "">("");
-    const [toAccountIndex, setToAccountIndex] = useState<number | "">("");
-    const [amount, setAmount] = useState<number>(0);
+    const [entryForm, setEntryForm] = useState<{
+        fromAccountIndex: number | "";
+        toAccountIndex: number | "";
+        amount: number;
+    }>({
+        fromAccountIndex: "",
+        toAccountIndex: "",
+        amount: 0
+    });
+
     const [description, setDescription] = useState<string>("");
     const [newAccountName, setNewAccountName] = useState<string>("");
     const [newAccountUnit, setNewAccountUnit] = useState<string>("");
@@ -35,16 +42,16 @@ export default function BudgetView() {
     function addEntry() {
         if (userBudget == null) return;
         // TODO: Add status text to user from validation errors
-        if (amount <= 0) return;
-        if (fromAccountIndex === toAccountIndex) return;
-        if (fromAccountIndex === "" || toAccountIndex === "") return;
+        if (entryForm.amount <= 0) return;
+        if (entryForm.fromAccountIndex === entryForm.toAccountIndex) return;
+        if (entryForm.fromAccountIndex === "" || entryForm.toAccountIndex === "") return;
 
-        const fromAccount = userBudget.accounts[fromAccountIndex];
-        const toAccount = userBudget.accounts[toAccountIndex];
+        const fromAccount = userBudget.accounts[entryForm.fromAccountIndex];
+        const toAccount = userBudget.accounts[entryForm.toAccountIndex];
 
         const newEntries = [...entries];
-        newEntries.push({ type: "Credit", accountId: fromAccount.id, amount: amount });
-        newEntries.push({ type: "Debit", accountId: toAccount.id, amount: amount });
+        newEntries.push({ type: "Credit", accountId: fromAccount.id, amount: entryForm.amount });
+        newEntries.push({ type: "Debit", accountId: toAccount.id, amount: entryForm.amount });
         setEntries(newEntries);
 
         clearInputs();
@@ -93,18 +100,27 @@ export default function BudgetView() {
     }
 
     function clearInputs() {
-        setFromAccountIndex("");
-        setToAccountIndex("");
+        setEntryForm({
+            fromAccountIndex: "",
+            toAccountIndex: "",
+            amount: 0
+        })
         setDescription("");
-        setAmount(0);
     }
 
     function trySetAmount(e: React.ChangeEvent<HTMLInputElement>) {
         const value = parseFloat(e.target.value);
         if (!isNaN(value) && value >= 0) {
-            setAmount(value);
+            setEntryForm(prev => ({ ...prev, amount: value }));
         }
     }
+    function handleChange(e: ChangeEvent<HTMLSelectElement>) {
+        setEntryForm(prev => ({
+            ...prev,
+            [e.target.name]: e.target.value === "" ? "" : Number(e.target.value)
+        }));
+    }
+
 
     return (
         <Base>
@@ -117,8 +133,9 @@ export default function BudgetView() {
                 <div className="grid grid-cols-[80px_1fr] items-center gap-2">
                     <label>From:</label>
                     <Select
-                        value={fromAccountIndex}
-                        onChange={e => setFromAccountIndex(e.target.value === "" ? "" : Number(e.target.value))}>
+                        name="fromAccountIndex"
+                        value={entryForm.fromAccountIndex}
+                        onChange={handleChange}>
                         <option value=""></option>
                         {userBudget.accounts.map((account, index) => (
                             <option key={index} value={index}>
@@ -131,8 +148,9 @@ export default function BudgetView() {
                 <div className="grid grid-cols-[80px_1fr] items-center gap-2">
                     <label>To:</label>
                     <Select
-                        value={toAccountIndex}
-                        onChange={e => setToAccountIndex(e.target.value === "" ? "" : Number(e.target.value))}>
+                        name="toAccountIndex"
+                        value={entryForm.toAccountIndex}
+                        onChange={handleChange}>
                         <option value=""></option>
                         {userBudget.accounts.map((account, index) => (
                             <option key={index} value={index}>
@@ -144,11 +162,11 @@ export default function BudgetView() {
 
                 <div className="grid grid-cols-[80px_1fr] items-center gap-2">
                     <label>Amount:</label>
-                    <Input type="number" min={0} onChange={trySetAmount} value={amount} />
+                    <Input type="number" min={0} onChange={trySetAmount} value={entryForm.amount} />
                 </div>
 
                 <div className="flex justify-end">
-                    <PrimaryButton disabled={amount <= 0 || fromAccountIndex === "" || toAccountIndex === ""} onClick={addEntry}>
+                    <PrimaryButton disabled={entryForm.amount <= 0 || entryForm.fromAccountIndex === "" || entryForm.toAccountIndex === ""} onClick={addEntry}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M11 13H5v-2h6V5h2v6h6v2h-6v6h-2z" /></svg>
                         Add
                     </PrimaryButton>
