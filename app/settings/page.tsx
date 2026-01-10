@@ -52,7 +52,7 @@ export default function Settings() {
     return (
         <Base>
             <h2 className="text-3xl">Settings</h2>
-            <form className="flex gap-4 flex-col items-start bg-[#1B2227] rounded p-4 max-w-md" onSubmit={(e) => { e.preventDefault(); save(); }}>
+            <form className="flex gap-4 flex-col items-start bg-[#1B2227] rounded p-4 max-w-sm" onSubmit={(e) => { e.preventDefault(); save(); }}>
                 <div className="grid grid-cols-[120px_1fr] items-center gap-2">
                     <label>Name:</label>
                     <Input type="text" required value={newAccountName} onChange={e => setNewAccountName(e.target.value)} />
